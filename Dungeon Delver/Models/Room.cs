@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,7 +24,7 @@ namespace Dungeon_Delver.Models
             NPCsInRoom = new List<NPC>();
         }
 
-        public void EnterRoom(Player player)
+        public void InsideRoom(Player player)
         {
             if (Description == "Blue")
             {
@@ -33,19 +34,32 @@ namespace Dungeon_Delver.Models
             {
                 Console.ForegroundColor = ConsoleColor.Red;
             }
-            else if (Description == "Yellow")
+            else if (Description == "Green")
             {
-                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.ForegroundColor = ConsoleColor.Green;
             }
-            else if (Description == "Black")
-            {
-                Console.ForegroundColor = ConsoleColor.White;
-            }
-            else if (Description == "Gold")
+            else if (Description == "Pink")
             {
                 Console.ForegroundColor = ConsoleColor.Magenta;
             }
-            Console.WriteLine($"\n{player.Name} has entered the {Description} room.\n");
+            else if (Description == "Gold")
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+            }
+
+            Console.WriteLine($"\n{player.Name} is inside the {Description} room.\n");
+            
+
+        }
+
+        public void RemoveItemFromRoom(Item item)
+        {
+            ItemsInRoom.Remove(item);
+        }
+
+        public void PrintEverythinInRoom()
+        {
+            
             Console.WriteLine("NPC:s in room: ");
             Console.WriteLine("***************\n");
 
@@ -61,13 +75,6 @@ namespace Dungeon_Delver.Models
             {
                 Console.WriteLine(item.ToString());
             }
-
-            Console.ResetColor();
-        }
-
-        public void RemoveItemFromRoom(Item item)
-        {
-            ItemsInRoom.Remove(item);
         }
     }
 }

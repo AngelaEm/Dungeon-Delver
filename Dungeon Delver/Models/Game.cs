@@ -20,6 +20,7 @@ namespace Dungeon_Delver.Models
        
         public void OnRoomEnter(Room room)
         {
+            room.InsideRoom(Player);
             Random random = new Random();          
             Console.WriteLine("\nSpin wheel of fortune!\n");
             Console.ReadKey();
@@ -27,17 +28,20 @@ namespace Dungeon_Delver.Models
 
             if (luckyNumber%2 == 0)
             {
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine($"Lucky you! You got {luckyNumber} and get {luckyNumber} extra XP!");
                 Player.Experience += luckyNumber;
-                Console.ResetColor();
+                Player.Health += luckyNumber;
+
+                Console.WriteLine($"Lucky you! You get {luckyNumber} extra XP and HP. You now have {Player.Experience} XP and {Player.Health} HP!");
+                
+               
             }
             else
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"To bad! You got {luckyNumber} and loose {luckyNumber} XP!");
                 Player.Experience -= luckyNumber;
-                Console.ResetColor();
+                Player.Health -= luckyNumber;
+                Console.WriteLine($"To bad! You loose {luckyNumber} XP and Hp. You now have {Player.Experience} XP and {Player.Health} HP...");
+                
+
             }
             Console.ReadKey();
 
@@ -60,29 +64,29 @@ namespace Dungeon_Delver.Models
                     if (hitRandom > 4)
                     {
                         npc.Health -= criticalDmg;
-                        Console.Beep(1000, 1000);
-                        Console.WriteLine($"{player.Name} hit a critical strike for {criticalDmg}. {npc.Name} now has {npc.Health} hp.");
+                        
+                        Console.WriteLine($"\n{player.Name} hit a critical strike for {criticalDmg}. {npc.Name} now has {npc.Health} hp.");
                         Console.ReadKey();
                     }
                     //you hit a normal strike
                     else
                     {
                         player.Attack(npc);
-                        Console.Beep(1000, 1000);
-                        Console.WriteLine($"{player.Name} hit a strike for {player.PlayerAttackDmg()}. {npc.Name} now has {npc.Health} hp.");
+                        
+                        Console.WriteLine($"\n{player.Name} hit a strike for {player.PlayerAttackDmg()}. {npc.Name} now has {npc.Health} hp.");
                         Console.ReadKey();
                     }
                 }
                 //Misses enemy
                 else
                 {
-                    Console.WriteLine("You missed your attack");
+                    Console.WriteLine("\nYou missed your attack");
                     Console.ReadKey();
                 }
                 if (npc.IsAlive && player.IsAlive)
                 {
                     npc.AttackPlayer(player);
-                    Console.WriteLine($"{npc.Name} strike back with {npc.Dmg} and {player.Name} now has {player.Health} hp.");
+                    Console.WriteLine($"\n{npc.Name} strike back with {npc.Dmg} and {player.Name} now has {player.Health} hp.");
                     Console.ReadKey();
                 }
 
@@ -90,13 +94,13 @@ namespace Dungeon_Delver.Models
             
             if (npc.IsAlive && !player.IsAlive)
             {
-                Console.WriteLine("Game over");
+                Console.WriteLine("\nGame over");
                 Console.ReadKey(true);
                 Environment.Exit(0);
             }
             else
             {
-                Console.WriteLine($"{npc.Name} died!");
+                Console.WriteLine($"\n{npc.Name} died!");
                 CurrentRoom.NPCsInRoom.Remove(npc);
                 npc.GiveXP(player);
                 Console.WriteLine($"\nYou now have {player.Experience} XP!");
@@ -106,6 +110,26 @@ namespace Dungeon_Delver.Models
                     player.PickUpKey(npc);
                 }                           
             }
+        }
+
+        public void FinalRoom()
+        {
+            Console.Clear();
+
+            if (Player.KeyRing.Count == 4)
+            {
+                Console.WriteLine($"\nYou got all keys! You are welcome to fight the {CurrentRoom.NPCsInRoom[0].Description}! Good Luck...");
+                Console.ReadKey();
+                Fight(Player, CurrentRoom.NPCsInRoom[0]);
+                Console.ReadKey();
+                
+            }
+            else
+            {
+                Console.WriteLine("\nYou need four keys to enter. Please check out the other rooms and try to find the right keys...\n");
+                
+            }
+            Console.ReadKey();
         }
     }
 }

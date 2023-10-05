@@ -17,16 +17,16 @@ namespace Dungeon_Delver.Models
             return  $"\nItem: {Name}\nDescription: {Description}\n";
         }
 
-        public int PotionEffect(Item item)
+        public int ItemEffekt(Item item)
         {
             if (item.IsUsable)
             {
-                Console.WriteLine($"Your health was increased by 20.");
-                return 20;
+                Console.WriteLine($"\nThis Item was good for you and your health was increased by 30.");
+                return 30;
             }
             else
             {
-                Console.WriteLine($"Your health was decreased by 10.");
+                Console.WriteLine($"\nThis item was bad for you and your health was decreased by 10.");
                 return -10;
             }
         }

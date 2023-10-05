@@ -22,7 +22,7 @@ namespace Dungeon_Delver.Models
         {
             Name = name;
             Description = description;
-            Health = 100;
+            Health = 200;
             Level = 1;
             Dexterity= 10;
             Strength = 10;       
@@ -50,6 +50,7 @@ namespace Dungeon_Delver.Models
         public void ChooseItemsInRoom(Room room)
         {
             Console.WriteLine("\nPress any key to get three random items from this room\n");
+            Console.ReadKey();
 
             Random r = new Random();
             if (room.ItemsInRoom.Count > 3)
@@ -74,7 +75,7 @@ namespace Dungeon_Delver.Models
 
         public void UseItem(Item item)
         {
-            Health += item.PotionEffect(item);
+            Health += item.ItemEffekt(item);
             Inventory.Remove(item);
 
             if (Health < 1)
@@ -95,6 +96,7 @@ namespace Dungeon_Delver.Models
             npc.Health -= (Dmg + Strength);
             
         }
+
         public int PlayerAttackDmg()
         {
             return Dmg + Strength;
@@ -114,9 +116,9 @@ namespace Dungeon_Delver.Models
             Console.ReadKey();
         }
 
-        public void SeePotionsAndWeaponsInBag()
+        public void SeeItemsToUseInBag()
         {
-            Console.WriteLine("You currently have these potions and weapons in yor bag:\n");
+            Console.WriteLine("You currently have these items in yor bag:\n");
             foreach (var item in Inventory)
             {
                 Console.WriteLine(item.ToString());
@@ -131,7 +133,7 @@ namespace Dungeon_Delver.Models
             {
                 foreach (Item item in Inventory)
                 {
-                    Console.WriteLine($"Do you want to use {item.Name} y/n?");
+                    Console.WriteLine($"Do you want to use {item.Description} {item.Name} y/n?");
                     string input = Console.ReadLine().ToLower();
 
                     if (input == "y")
@@ -141,6 +143,8 @@ namespace Dungeon_Delver.Models
                     }
 
                 }
+                Console.ReadKey();
+              
 
             }
         }
