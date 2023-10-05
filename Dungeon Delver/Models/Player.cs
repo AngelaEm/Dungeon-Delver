@@ -22,7 +22,7 @@ namespace Dungeon_Delver.Models
         {
             Name = name;
             Description = description;
-            Health = 200;
+            Health = 250;
             Level = 1;
             Dexterity= 10;
             Strength = 10;       

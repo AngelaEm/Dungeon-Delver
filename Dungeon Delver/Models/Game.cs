@@ -101,14 +101,24 @@ namespace Dungeon_Delver.Models
             else
             {
                 Console.WriteLine($"\n{npc.Name} died!");
-                CurrentRoom.NPCsInRoom.Remove(npc);
-                npc.GiveXP(player);
-                Console.WriteLine($"\nYou now have {player.Experience} XP!");
-                if (npc.NPCitems.Count > 0)
+                if (npc.Name != "Dragon")
                 {
-                    Console.WriteLine($"\n{npc.Name} dropped a {npc.NPCitems[0].Description} and you picked it up.");
-                    player.PickUpKey(npc);
-                }                           
+                    CurrentRoom.NPCsInRoom.Remove(npc);
+                    npc.GiveXP(player);
+                    Console.WriteLine($"\nYou now have {player.Experience} XP!");
+                    if (npc.NPCitems.Count > 0)
+                    {
+                        Console.WriteLine($"\n{npc.Name} dropped a {npc.NPCitems[0].Description} and you picked it up.");
+                        player.PickUpKey(npc);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("\nCongratulations! You defeated the dragon and reached the treasure.");
+                    Console.ReadKey();
+                    Environment.Exit(0);
+                }
+                                        
             }
         }
 
