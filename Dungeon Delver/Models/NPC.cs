@@ -22,9 +22,9 @@ namespace Dungeon_Delver.Models
 
         }
 
-        public int AttackPlayer()
+        public void AttackPlayer(Player player)
         {
-            return Dmg;
+            player.Health -= Dmg;
         }
 
         public int HealPlayer()

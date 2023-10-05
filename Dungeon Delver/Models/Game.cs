@@ -50,6 +50,7 @@ namespace Dungeon_Delver.Models
 
 
         }
+
         public void OnEnemyDefeat()
         {
 
@@ -59,6 +60,57 @@ namespace Dungeon_Delver.Models
 
         }
 
+        public void Fight(Player player, NPC npc)
+        {
+            while (npc.IsAlive && player.IsAlive)
+            {
+                Random random = new Random();
+                int criticalDmg = player.PlayerAttackDmg() * 2;
+                
+                int hitRandom = random.Next(1, 6);
+
+                //Hits enemy
+                if (hitRandom > 1)
+                {
+                    //You hit a critical strike
+                    if (hitRandom > 4)
+                    {
+                        npc.Health -= criticalDmg;
+                        Console.WriteLine($"{player.Name} hit a critical strike for {criticalDmg}. {npc.Name} now has {npc.Health} hp.");
+                    }
+                    //you hit a normal strike
+                    else
+                    {
+                        player.Attack(npc);
+                        Console.WriteLine($"{player.Name} hit a strike for {player.PlayerAttackDmg()}. {npc.Name} now has {npc.Health} hp.");
+                    }
+                }
+                //Misses enemy
+                else
+                {
+                    Console.WriteLine("You missed your attack");
+                }
+
+                npc.AttackPlayer(player);
+
+                Console.WriteLine($"{npc.Name} strike back with {npc.Dmg} and {player.Name} now has {player.Health} hp.");
+
+
+
+            }
+
+            if (!npc.IsAlive)
+            {
+                Console.WriteLine($"{npc.Name} died!");
+            }
+            else
+            {
+                Console.WriteLine("Game over");
+                Console.ReadKey(true);
+                Environment.Exit(0);
+            }
+            
+        }
 
 
 

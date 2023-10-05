@@ -10,11 +10,30 @@ namespace Dungeon_Delver.Models
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public bool IsAlive { get; set; } = true;
+        public bool IsAlive
+        {
+            get
+            {
+                if (Health > 0)
+                {
+                    return true;
+                }
+                return false;
+            }
+
+            set { IsAlive = value; }
+        } 
+                
+
+            
+                   
+            
+               
         public int Health { get; set; }
         public int Dmg { get; set; }
 
 
+         
 
     }
 }

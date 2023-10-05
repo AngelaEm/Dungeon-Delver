@@ -7,7 +7,7 @@ namespace Dungeon_Delver
     {
         //static Game game = new Game();
         static string[] mainMenuChoices = { "Blue room", "Red room", "Yellow room", "Black room", "Golden room","Extra", "Exit" };
-        static string[] roomChoices = { "See whats inside", "Attack", "Pick up item", "Use item", "Check items in bag", "Exit room"};      
+        static string[] roomChoices = { "See whats inside", "Interact with NPC", "Pick up item", "Use item", "Check items in bag", "Exit room"};      
 
         static int menuSelected = MenuDesign(mainMenuChoices);
 
@@ -38,6 +38,7 @@ namespace Dungeon_Delver
             NPC GiantRat = new NPC("Giant Rat", "Its Huge!", 50, false, 5);
             NPC Slime = new NPC("Slime", "its very slimy", 60, false, 10);
             NPC Wizzard = new NPC("Klaus", "A very red and fat man", 100, true, 0);
+
 
             // Rooms
 
@@ -175,154 +176,157 @@ namespace Dungeon_Delver
 
         static void MainMenu(int menuSelected, Game game, Player player)
         {
-            bool isRunning = true;
+            switch (menuSelected)
 
-            while (isRunning)
             {
-                switch (menuSelected)
+                case 0:
 
-                {
-                    case 0:
+                    game.OnRoomEnter(game.RoomsInGame[0]);
+                    InsideRoomMenu(MenuDesign(roomChoices), game, player, game.RoomsInGame[0]);
+                    break;
 
-                        game.OnRoomEnter(game.RoomsInGame[0]);
-                        InsideRoomMenu(MenuDesign(roomChoices), game, player, game.RoomsInGame[0]);
-                        break;
+                case 1:
 
-                    case 1:
+                    game.OnRoomEnter(game.RoomsInGame[1]);
+                    InsideRoomMenu(MenuDesign(roomChoices), game, player, game.RoomsInGame[1]);
+                    break;
 
-                        game.OnRoomEnter(game.RoomsInGame[1]);
-                        InsideRoomMenu(MenuDesign(roomChoices), game, player, game.RoomsInGame[1]);
-                        break;
+                case 2:
+                    game.OnRoomEnter(game.RoomsInGame[2]);
+                    InsideRoomMenu(MenuDesign(roomChoices), game, player, game.RoomsInGame[2]);
+                    break;
 
-                    case 2:
-                        game.OnRoomEnter(game.RoomsInGame[2]);
-                        InsideRoomMenu(MenuDesign(roomChoices), game, player, game.RoomsInGame[2]);
-                        break;
+                case 3:
+                    game.OnRoomEnter(game.RoomsInGame[3]);
+                    InsideRoomMenu(MenuDesign(roomChoices), game, player, game.RoomsInGame[3]);
+                    break;
 
-                    case 3:
-                        game.OnRoomEnter(game.RoomsInGame[3]);
-                        InsideRoomMenu(MenuDesign(roomChoices), game, player, game.RoomsInGame[3]);
-                        break;
+                case 4:
+                    game.OnRoomEnter(game.RoomsInGame[4]);
+                    InsideRoomMenu(MenuDesign(roomChoices), game, player, game.RoomsInGame[4]);
+                    break;
 
-                    case 4:
-                        game.OnRoomEnter(game.RoomsInGame[4]);
-                        InsideRoomMenu(MenuDesign(roomChoices), game, player, game.RoomsInGame[4]);
-                        break;
+                case 5:
 
-                    case 5:
+                    break;
 
-                        break;
+                case 6:
 
-                    case 6:
-
-                        Environment.Exit(0);
-                        break;
+                    Environment.Exit(0);
+                    break;
 
 
-                }
             }
         }
 
         static void InsideRoomMenu(int menuSelected, Game game, Player player, Room room)
         {
-            bool isRunning = true;
-
-            while (isRunning)
+            switch (menuSelected)
             {
-                switch (menuSelected)
-                {
-                    case 0:
+                case 0:
 
-                        Console.Clear();
-                        room.EnterRoom(player);
+                    Console.Clear();
+                    room.EnterRoom(player);
+                    Console.ReadKey();
+                    InsideRoomMenu(MenuDesign(roomChoices), game, player, room);
+
+                    break;
+
+                case 1:
+
+                    Console.Clear();
+
+
+                    foreach (NPC npc in room.NPCsInRoom)
+                    {
+                        Console.WriteLine($"You meet {npc.Name}!");
                         Console.ReadKey();
-                        InsideRoomMenu(MenuDesign(roomChoices), game, player, room);
-
-                        break;
-
-                    case 1:
-
-                        Console.Clear();
-                        Console.WriteLine("Attack!");
-                        Console.ReadKey();
-                       
-
-                        foreach (NPC npc in room.NPCsInRoom)
+                        if (npc.IsFriendly)
                         {
-                            npc.TakeDamage(player);
-                            Console.WriteLine($"{player.Name} attack {npc.Name}. {npc.Name} now has health {npc.Health} left\n");
-                            player.TakeDamage(npc);
-                            Console.WriteLine($"{player.Name} attack {npc.Name} but it was a tough fight and {player.Name} now has health {player.Health} left\n");
+                            Console.WriteLine("Hello Friend! You get 10 XP!");
+                            player.Experience += 10;
                             Console.ReadKey();
                         }
+                        else
+                        {
+                            npc.AttackPlayer(player);
+                           
+                            Console.WriteLine($"{npc.Name} attack {player.Name}. {player.Name} now has health {player.Health} left\n");
+                            Console.ReadKey();
+                            game.Fight(player, npc);
+
+                        }
                         
-                        InsideRoomMenu(MenuDesign(roomChoices), game, player, room);
 
-                        break;
+                        Console.ReadKey();
+                    }
 
-                    case 2:
+                    InsideRoomMenu(MenuDesign(roomChoices), game, player, room);
 
+                    break;
+
+                case 2:
+
+                    Console.Clear();
+
+
+                    Console.WriteLine("Do you want to add items to yor bag?");
+                    Console.WriteLine("You may add three different items. Press enter to continue...\n");
+                    Console.ReadKey();
+
+
+
+                    for (int i = 0; i < room.ItemsInRoom.Count; i++)
+                    {
                         Console.Clear();
-
-
-                        Console.WriteLine("Do you want to add items to yor bag?");
-                        Console.WriteLine("You may add three different items. Press enter to continue...\n");
-                        Console.ReadKey();
-
-
-
-                        for (int i = 0; i < room.ItemsInRoom.Count; i++)
+                        Console.WriteLine($"Press y to add and n to pass: {room.ItemsInRoom[i]}");
+                        string input = Console.ReadLine();
+                        if (input == "y")
                         {
-                            Console.Clear();
-                            Console.WriteLine($"Press y to add and n to pass: {room.ItemsInRoom[i]}");
-                            string input = Console.ReadLine();
-                            if (input == "y")
-                            {
-                                player.PickUpItem(room.ItemsInRoom[i]);
-                                Console.WriteLine($"\nYou added {room.ItemsInRoom[i]}");
-                            }
-                            else
-                            {
-                                Console.WriteLine($"\nYou did not add {room.ItemsInRoom[i]}");
-                            }
-
+                            player.PickUpItem(room.ItemsInRoom[i]);
+                            Console.WriteLine($"\nYou added {room.ItemsInRoom[i]}");
                         }
-                        Console.ReadKey();
-
-
-                        InsideRoomMenu(MenuDesign(roomChoices), game, player, room);
-
-                        break;
-
-                    case 3:
-
-                       
-                        InsideRoomMenu(MenuDesign(roomChoices), game, player, room);
-
-
-                        break;
-
-                    case 4:
-
-                        foreach (var item in player.Inventory)
+                        else
                         {
-                            Console.WriteLine(item.Name);
+                            Console.WriteLine($"\nYou did not add {room.ItemsInRoom[i]}");
                         }
-                        Console.ReadKey();
-                        InsideRoomMenu(MenuDesign(roomChoices), game, player, room);
 
-                        break;
+                    }
+                    Console.ReadKey();
 
-                    case 5:
-                        isRunning = false;
-                        MainMenu(MenuDesign(mainMenuChoices), game, player);
-                        break;
-                }
+
+                    InsideRoomMenu(MenuDesign(roomChoices), game, player, room);
+
+                    break;
+
+                case 3:
+
+
+                    InsideRoomMenu(MenuDesign(roomChoices), game, player, room);
+
+
+                    break;
+
+                case 4:
+
+                    foreach (var item in player.Inventory)
+                    {
+                        Console.WriteLine(item.Name);
+                    }
+                    Console.ReadKey();
+                    InsideRoomMenu(MenuDesign(roomChoices), game, player, room);
+
+                    break;
+
+                case 5:
+                    
+                    MainMenu(MenuDesign(mainMenuChoices), game, player);
+                    break;
             }
-            
 
-            
-            
+
+
+
 
         }
     }

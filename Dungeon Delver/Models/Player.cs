@@ -28,9 +28,9 @@ namespace Dungeon_Delver.Models
             Dmg = 10;
         }
 
-        public void TakeDamage(NPC npc)
+        public int TakeDamage(Potion potion)
         {
-            Health -= npc.Dmg;
+            return Health += potion.PotionEffect();
         }
         public void PickUpItem(Item item)
         {
@@ -52,7 +52,12 @@ namespace Dungeon_Delver.Models
         {        
             Dmg = weapon.Dmg;
         }
-        public int Attack()
+        public void Attack(NPC npc)
+        {
+            npc.Health -= (Dmg + Strength);
+            
+        }
+        public int PlayerAttackDmg()
         {
             return Dmg + Strength;
         }
