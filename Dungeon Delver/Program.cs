@@ -9,7 +9,7 @@ namespace Dungeon_Delver
         static string[] mainMenuChoices = { "Blue room", "Red room", "Yellow room", "Black room", "Golden room","Extra", "Exit" };
         static string[] roomChoices = { "See whats inside", "Interact with NPC", "Pick up item", "Use item", "Check items in bag", "Exit room"};      
 
-        static int menuSelected = MenuDesign(mainMenuChoices);
+        
 
         static void Main(string[] args)
         {
@@ -26,7 +26,6 @@ namespace Dungeon_Delver
 
             MainMenu(MenuDesign(mainMenuChoices), game, angela);
             
-
             
 
         }
@@ -38,6 +37,10 @@ namespace Dungeon_Delver
             NPC GiantRat = new NPC("Giant Rat", "Its Huge!", 50, false, 5);
             NPC Slime = new NPC("Slime", "its very slimy", 60, false, 10);
             NPC Wizzard = new NPC("Klaus", "A very red and fat man", 100, true, 0);
+            NPC friendly1 = new NPC("Unicorn", "A very friendly unicorn", 50, true, 0);
+            NPC friendly2 = new NPC("Dog", "A very friendly dog", 50, true, 0);
+            NPC friendly3 = new NPC("Teacher", "A very friendly teacher", 70, true, 0);
+            NPC friendly4 = new NPC("Santa Claus", "A very friendly santa", 60, true, 0);
 
 
             // Rooms
@@ -108,8 +111,13 @@ namespace Dungeon_Delver
             // Add NPSs in room
             Blue.NPCsInRoom.Add(GiantRat);
             Blue.NPCsInRoom.Add(Slime);
+            Blue.NPCsInRoom.Add(friendly1);
+            Red.NPCsInRoom.Add(friendly2);
             Red.NPCsInRoom.Add(Crab);
             Yellow.NPCsInRoom.Add(Wizzard);
+            Yellow.NPCsInRoom.Add(friendly3);
+            Black.NPCsInRoom.Add(friendly4);
+
 
             
             game.RoomsInGame.Add(Blue);
@@ -180,30 +188,34 @@ namespace Dungeon_Delver
 
             {
                 case 0:
-
-                    game.OnRoomEnter(game.RoomsInGame[0]);
-                    InsideRoomMenu(MenuDesign(roomChoices), game, player, game.RoomsInGame[0]);
+                    game.CurrentRoom = game.RoomsInGame[0];
+                    game.OnRoomEnter(game.CurrentRoom);
+                    InsideRoomMenu(MenuDesign(roomChoices), game, player, game.CurrentRoom);
                     break;
 
                 case 1:
 
-                    game.OnRoomEnter(game.RoomsInGame[1]);
-                    InsideRoomMenu(MenuDesign(roomChoices), game, player, game.RoomsInGame[1]);
+                    game.CurrentRoom = game.RoomsInGame[1];
+                    game.OnRoomEnter(game.CurrentRoom);
+                    InsideRoomMenu(MenuDesign(roomChoices), game, player, game.CurrentRoom);
                     break;
 
                 case 2:
-                    game.OnRoomEnter(game.RoomsInGame[2]);
-                    InsideRoomMenu(MenuDesign(roomChoices), game, player, game.RoomsInGame[2]);
+                    game.CurrentRoom = game.RoomsInGame[2];
+                    game.OnRoomEnter(game.CurrentRoom);
+                    InsideRoomMenu(MenuDesign(roomChoices), game, player, game.CurrentRoom);
                     break;
 
                 case 3:
-                    game.OnRoomEnter(game.RoomsInGame[3]);
-                    InsideRoomMenu(MenuDesign(roomChoices), game, player, game.RoomsInGame[3]);
+                    game.CurrentRoom = game.RoomsInGame[3];
+                    game.OnRoomEnter(game.CurrentRoom);
+                    InsideRoomMenu(MenuDesign(roomChoices), game, player, game.CurrentRoom);
                     break;
 
                 case 4:
-                    game.OnRoomEnter(game.RoomsInGame[4]);
-                    InsideRoomMenu(MenuDesign(roomChoices), game, player, game.RoomsInGame[4]);
+                    game.CurrentRoom = game.RoomsInGame[4];
+                    game.OnRoomEnter(game.CurrentRoom);
+                    InsideRoomMenu(MenuDesign(roomChoices), game, player, game.CurrentRoom);
                     break;
 
                 case 5:
@@ -236,31 +248,52 @@ namespace Dungeon_Delver
 
                     Console.Clear();
 
-
-                    foreach (NPC npc in room.NPCsInRoom)
+                    if(room.NPCsInRoom.Count != 0)
                     {
-                        Console.WriteLine($"You meet {npc.Name}!");
-                        Console.ReadKey();
-                        if (npc.IsFriendly)
+                        foreach (NPC npc in room.NPCsInRoom)
                         {
-                            Console.WriteLine("Hello Friend! You get 10 XP!");
-                            player.Experience += 10;
+                            
+
+                            Console.WriteLine($"You meet {npc.Name}!");
                             Console.ReadKey();
-                        }
-                        else
-                        {
-                            npc.AttackPlayer(player);
-                           
-                            Console.WriteLine($"{npc.Name} attack {player.Name}. {player.Name} now has health {player.Health} left\n");
-                            Console.ReadKey();
-                            game.Fight(player, npc);
+                            if (npc.IsFriendly)
+                            {
+                                if (npc.Experience > 0)
+                                {
+                                    npc.GiveXP(player);
+                                    Console.WriteLine("Hello Friend! You get 10 XP!");
+                                    Console.WriteLine($"You now have {player.Experience} XP!");
+                                    
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Hello friend! Nice to see you again!");
+                                }
+                                
+                                Console.ReadKey();                               
+                                
+                            }
+                            
+                            else
+                            {
+                                npc.AttackPlayer(player);
+
+                                Console.WriteLine($"{npc.Name} attack {player.Name}. {player.Name} now has health {player.Health} left\n");
+                                Console.ReadKey();
+                                game.Fight(player, npc);
+                                break;
+
+                            }
 
                         }
+
                         
-
-                        Console.ReadKey();
                     }
-
+                    else
+                    {
+                        Console.WriteLine("No NPC:s to interact with.");
+                    }
+                    Console.ReadKey();
                     InsideRoomMenu(MenuDesign(roomChoices), game, player, room);
 
                     break;
@@ -276,23 +309,7 @@ namespace Dungeon_Delver
 
 
 
-                    for (int i = 0; i < room.ItemsInRoom.Count; i++)
-                    {
-                        Console.Clear();
-                        Console.WriteLine($"Press y to add and n to pass: {room.ItemsInRoom[i]}");
-                        string input = Console.ReadLine();
-                        if (input == "y")
-                        {
-                            player.PickUpItem(room.ItemsInRoom[i]);
-                            Console.WriteLine($"\nYou added {room.ItemsInRoom[i]}");
-                        }
-                        else
-                        {
-                            Console.WriteLine($"\nYou did not add {room.ItemsInRoom[i]}");
-                        }
-
-                    }
-                    Console.ReadKey();
+                    
 
 
                     InsideRoomMenu(MenuDesign(roomChoices), game, player, room);
@@ -323,10 +340,6 @@ namespace Dungeon_Delver
                     MainMenu(MenuDesign(mainMenuChoices), game, player);
                     break;
             }
-
-
-
-
 
         }
     }

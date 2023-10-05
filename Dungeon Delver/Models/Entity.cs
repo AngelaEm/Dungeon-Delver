@@ -9,7 +9,10 @@ namespace Dungeon_Delver.Models
     internal abstract class Entity
     {
         public string Name { get; set; }
+
         public string Description { get; set; }
+
+        public int Experience { get; set; } 
         public bool IsAlive
         {
             get

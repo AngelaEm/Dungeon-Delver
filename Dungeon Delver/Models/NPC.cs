@@ -19,6 +19,8 @@ namespace Dungeon_Delver.Models
             Health = health;
             IsFriendly = isFriendly;
             Dmg = dmg;
+            Experience = 10;
+           
 
         }
 
@@ -45,6 +47,12 @@ namespace Dungeon_Delver.Models
         public override string ToString()
         {
             return $"Name: {Name}\nDescription: {Description}\nIs friendle: {IsFriendly}\nDamage: {Dmg}\nHealth: {Health}\n";
+        }
+
+        public void GiveXP(Player player)
+        {
+            player.Experience += Experience;
+            Experience = 0;
         }
 
     }

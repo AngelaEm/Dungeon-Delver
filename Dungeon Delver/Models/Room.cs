@@ -10,9 +10,9 @@ namespace Dungeon_Delver.Models
     {
         public string Description { get; set; }
 
-        public List<Item> ItemsInRoom { get; set; }
+        public List<Item>? ItemsInRoom { get; set; }
 
-        public List<NPC> NPCsInRoom { get; set; }
+        public List<NPC>? NPCsInRoom { get; set; }
 
         public Room(string description)
         {

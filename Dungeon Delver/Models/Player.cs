@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,7 +13,7 @@ namespace Dungeon_Delver.Models
         public int Dexterity { get; set; } 
         public int Strength { get; set; } 
         public int Level { get; set; } 
-        public int Experience { get; set; } 
+       
 
 
         public Player(string name, string description)
@@ -36,6 +37,28 @@ namespace Dungeon_Delver.Models
         {
            Inventory.Add(item);
         }
+
+        public void ChooseItemsInRoom()
+        {
+            for (int i = 0; i < room.ItemsInRoom.Count; i++)
+            {
+                Console.Clear();
+                Console.WriteLine($"Press y to add and n to pass: {room.ItemsInRoom[i]}");
+                string input = Console.ReadLine();
+                if (input == "y")
+                {
+                    player.PickUpItem(room.ItemsInRoom[i]);
+                    Console.WriteLine($"\nYou added {room.ItemsInRoom[i]}");
+                }
+                else
+                {
+                    Console.WriteLine($"\nYou did not add {room.ItemsInRoom[i]}");
+                }
+
+            }
+            Console.ReadKey();
+        }
+
         public void UseItem(Potion potion)
         {
             Health += potion.PotionEffect();

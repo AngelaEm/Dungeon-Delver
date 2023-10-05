@@ -51,8 +51,9 @@ namespace Dungeon_Delver.Models
 
         }
 
-        public void OnEnemyDefeat()
+        public void OnEnemiesInRommDefeat()
         {
+            CurrentRoom.NPCsInRoom.Clear();
 
         }
         public void OnItemUse()
@@ -66,7 +67,7 @@ namespace Dungeon_Delver.Models
             {
                 Random random = new Random();
                 int criticalDmg = player.PlayerAttackDmg() * 2;
-                
+
                 int hitRandom = random.Next(1, 6);
 
                 //Hits enemy
@@ -77,43 +78,48 @@ namespace Dungeon_Delver.Models
                     {
                         npc.Health -= criticalDmg;
                         Console.WriteLine($"{player.Name} hit a critical strike for {criticalDmg}. {npc.Name} now has {npc.Health} hp.");
+                        Console.ReadKey();
                     }
                     //you hit a normal strike
                     else
                     {
                         player.Attack(npc);
                         Console.WriteLine($"{player.Name} hit a strike for {player.PlayerAttackDmg()}. {npc.Name} now has {npc.Health} hp.");
+                        Console.ReadKey();
                     }
                 }
                 //Misses enemy
                 else
                 {
                     Console.WriteLine("You missed your attack");
+                    Console.ReadKey();
                 }
 
-                npc.AttackPlayer(player);
+                if (npc.IsAlive)
+                {
+                    npc.AttackPlayer(player);
+                    Console.WriteLine($"{npc.Name} strike back with {npc.Dmg} and {player.Name} now has {player.Health} hp.");
+                    Console.ReadKey();
+                }
+                else if (!player.IsAlive)
+                {
+                    Console.WriteLine("Game over");
+                    Console.ReadKey(true);
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    Console.WriteLine($"{npc.Name} died!");
+                    CurrentRoom.NPCsInRoom.Remove(npc);
+                    npc.GiveXP(player);
+                    Console.WriteLine($"You now have {player.Experience} XP!");
+                    break;
+                }          
 
-                Console.WriteLine($"{npc.Name} strike back with {npc.Dmg} and {player.Name} now has {player.Health} hp.");
-
-
-
-            }
-
-            if (!npc.IsAlive)
-            {
-                Console.WriteLine($"{npc.Name} died!");
-            }
-            else
-            {
-                Console.WriteLine("Game over");
-                Console.ReadKey(true);
-                Environment.Exit(0);
             }
             
+            
         }
-
-
-
 
     }
 }
