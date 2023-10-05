@@ -23,6 +23,26 @@ namespace Dungeon_Delver.Models
 
         public void EnterRoom(Player player)
         {
+            if (Description == "Blue")
+            {
+                Console.ForegroundColor = ConsoleColor.Blue;
+            }
+            else if (Description == "Red")
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+            }
+            else if (Description == "Yellow")
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+            }
+            else if (Description == "Black")
+            {
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+            else if (Description == "Gold")
+            {
+                Console.ForegroundColor = ConsoleColor.Magenta;
+            }
             Console.WriteLine($"\n{player.Name} has entered the {Description} room.\n");
             Console.WriteLine("NPC:s in room: ");
             Console.WriteLine("***************\n");
@@ -32,6 +52,15 @@ namespace Dungeon_Delver.Models
                 Console.WriteLine(npc.ToString());
                 Console.WriteLine("***************\n");
             }
+            Console.WriteLine("Items in room:\n");
+            Console.WriteLine("***************\n");
+
+            foreach (var item in ItemsInRoom)
+            {
+                Console.WriteLine(item.ToString());
+            }
+
+            Console.ResetColor();
         }
     }
 }

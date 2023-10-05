@@ -27,11 +27,28 @@ namespace Dungeon_Delver.Models
         }
         public void OnRoomEnter(Room room)
         {
-            Console.Clear();
-            room.EnterRoom(Player);
-            Console.WriteLine("Press enter to continue...");
+            Random random = new Random();          
+            Console.WriteLine("\nSpin wheel of fortune!\n");
             Console.ReadKey();
-            Console.Clear();
+            int luckyNumber = random.Next(1, 21);
+
+            if (luckyNumber%2 == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine($"Lucky you! You got {luckyNumber} and get {luckyNumber} extra XP!");
+                Player.Experience += luckyNumber;
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"To bad! You got {luckyNumber} and loose {luckyNumber} XP!");
+                Player.Experience -= luckyNumber;
+                Console.ResetColor();
+            }
+            Console.ReadKey();
+
+
         }
         public void OnEnemyDefeat()
         {

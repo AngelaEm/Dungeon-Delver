@@ -6,8 +6,8 @@ namespace Dungeon_Delver
     internal class Program
     {
         //static Game game = new Game();
-        static string[] mainMenuChoices = { "Blue room", "Red room", "Black room", "Yellow room", "Golden room","Extra", "Exit" };
-        static string[] roomChoices = { "Attack", "Pick up item", "Use item", "Check items in bag", "Exit room"};      
+        static string[] mainMenuChoices = { "Blue room", "Red room", "Yellow room", "Black room", "Golden room","Extra", "Exit" };
+        static string[] roomChoices = { "See whats inside", "Attack", "Pick up item", "Use item", "Check items in bag", "Exit room"};      
 
         static int menuSelected = MenuDesign(mainMenuChoices);
 
@@ -48,14 +48,14 @@ namespace Dungeon_Delver
             Room Gold = new Room("Gold");
 
             // Keys
-            Key blueKey1 = new Key("Blue key", "gold", true);
-            Key blueKey2 = new Key("Blue key", "mud", false);
-            Key redKey1 = new Key("Red key", "gold", true);
-            Key redKey2 = new Key("Red key", "mud", false);
-            Key yellowKey1 = new Key("Yellow key", "gold", true);
-            Key yellowKey2 = new Key("Yellow key", "mud", false);
-            Key blackKey1 = new Key("Black key", "gold", true);
-            Key blackKey2 = new Key("Black key", "mud", false);
+            Key blueKey1 = new Key("Blue key 1", "A small lightblue key", true);
+            Key blueKey2 = new Key("Blue key 2", "A big darkblue key", false);
+            Key redKey1 = new Key("Red key 1", "A shiny red key", true);
+            Key redKey2 = new Key("Red key 2", "A dirty old key", false);
+            Key yellowKey1 = new Key("Yellow key 1", "A heavy golden key", false);
+            Key yellowKey2 = new Key("Yellow key 2", "A heavy neonyellow key", true);
+            Key blackKey1 = new Key("Black key 1", "A talking black key", false);
+            Key blackKey2 = new Key("Black key", "A silent black key", true);
 
             // Potions
             Potion healthPotion = new Potion("Health Potion", "Generates health", true);
@@ -233,32 +233,43 @@ namespace Dungeon_Delver
                 {
                     case 0:
 
-                        foreach (NPC npc in room.NPCsInRoom)
-                        {
-                            npc.TakeDamage(player);
-                            Console.WriteLine($"{npc.Name} has {npc.Health} left");
-                            player.TakeDamage(npc);
-
-                        }
+                        Console.Clear();
+                        room.EnterRoom(player);
                         Console.ReadKey();
                         InsideRoomMenu(MenuDesign(roomChoices), game, player, room);
-
 
                         break;
 
                     case 1:
+
                         Console.Clear();
-                        Console.WriteLine("Items in room:\n");
-                        foreach (var item in room.ItemsInRoom)
+                        Console.WriteLine("Attack!");
+                        Console.ReadKey();
+                       
+
+                        foreach (NPC npc in room.NPCsInRoom)
                         {
-                            Console.WriteLine(item.Name);
+                            npc.TakeDamage(player);
+                            Console.WriteLine($"{player.Name} attack {npc.Name}. {npc.Name} now has health {npc.Health} left\n");
+                            player.TakeDamage(npc);
+                            Console.WriteLine($"{player.Name} attack {npc.Name} but it was a tough fight and {player.Name} now has health {player.Health} left\n");
+                            Console.ReadKey();
                         }
+                        
+                        InsideRoomMenu(MenuDesign(roomChoices), game, player, room);
+
+                        break;
+
+                    case 2:
+
+                        Console.Clear();
+
 
                         Console.WriteLine("Do you want to add items to yor bag?");
                         Console.WriteLine("You may add three different items. Press enter to continue...\n");
                         Console.ReadKey();
 
-                        
+
 
                         for (int i = 0; i < room.ItemsInRoom.Count; i++)
                         {
@@ -274,24 +285,24 @@ namespace Dungeon_Delver
                             {
                                 Console.WriteLine($"\nYou did not add {room.ItemsInRoom[i]}");
                             }
-                            
+
                         }
                         Console.ReadKey();
 
 
-                        Console.ReadKey();
-                        InsideRoomMenu(MenuDesign(roomChoices), game, player, room);
-
-                        break;
-
-                    case 2:
-
-                        Console.ReadKey();
                         InsideRoomMenu(MenuDesign(roomChoices), game, player, room);
 
                         break;
 
                     case 3:
+
+                       
+                        InsideRoomMenu(MenuDesign(roomChoices), game, player, room);
+
+
+                        break;
+
+                    case 4:
 
                         foreach (var item in player.Inventory)
                         {
@@ -302,8 +313,7 @@ namespace Dungeon_Delver
 
                         break;
 
-                    case 4:
-
+                    case 5:
                         isRunning = false;
                         MainMenu(MenuDesign(mainMenuChoices), game, player);
                         break;
