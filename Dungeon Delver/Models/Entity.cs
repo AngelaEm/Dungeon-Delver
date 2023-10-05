@@ -21,22 +21,19 @@ namespace Dungeon_Delver.Models
                 {
                     return true;
                 }
-                return false;
+                else
+                {
+                    return false;
+                }
+               
             }
 
             set { IsAlive = value; }
         } 
                 
-
-            
-                   
-            
                
         public int Health { get; set; }
         public int Dmg { get; set; }
-
-
-         
 
     }
 }

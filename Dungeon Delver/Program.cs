@@ -6,7 +6,7 @@ namespace Dungeon_Delver
     internal class Program
     {
         //static Game game = new Game();
-        static string[] mainMenuChoices = { "Blue room", "Red room", "Yellow room", "Black room", "Golden room","Extra", "Exit" };
+        static string[] mainMenuChoices = { "Blue room", "Red room", "Yellow room", "Black room", "Golden room","Exit"};
         static string[] roomChoices = { "See whats inside", "Interact with NPC", "Pick up item", "Use item", "Check items in bag", "Exit room"};      
 
         
@@ -37,7 +37,7 @@ namespace Dungeon_Delver
             NPC GiantRat = new NPC("Giant Rat", "Its Huge!", 50, false, 5);
             NPC Slime = new NPC("Slime", "its very slimy", 60, false, 10);
             NPC Ghost = new NPC("Ghost", "Is very spooky", 90, false, 15);
-            NPC Vampire = new NPC("Vampire", "Drink your blood", 80, false, 8);
+            NPC Vampire = new NPC("Vampire", "Drink your blood", 380, false, 8);
             NPC Wizzard = new NPC("Klaus", "A very red and fat man", 100, true, 0);
             NPC friendly1 = new NPC("Unicorn", "A very friendly unicorn", 50, true, 0);
             NPC friendly2 = new NPC("Dog", "A very friendly dog", 50, true, 0);
@@ -64,15 +64,15 @@ namespace Dungeon_Delver
             Key blackKey2 = new Key("Black key", "A silent black key", false);
 
             // Potions
-            Potion healthPotion = new Potion("Health Potion", "Generates health", true);
-            Potion healthPotion1 = new Potion("Health Potion", "Generates health", true);
-            Potion healthPotion2 = new Potion("Health Potion", "Generates health", true);
-            Potion healthPotion3 = new Potion("Health Potion", "Generates health", false);
-            Potion healthPotion4 = new Potion("Health Potion", "Generates health", false);
-            Potion mysteryPotion = new Potion("Health Potion", "Drink at your own peril", true);
-            Potion mysteryPotion1 = new Potion("Health Potion", "Drink at your own peril", true);
-            Potion mysteryPotio2 = new Potion("Health Potion", "Drink at your own peril", false);
-            Potion mysteryPotio3 = new Potion("Health Potion", "Drink at your own peril", false);
+            Potion healthPotion = new Potion("Health Potion", "Green", true);
+            Potion healthPotion1 = new Potion("Health Potion", "Pink", true);
+            Potion healthPotion2 = new Potion("Health Potion", "Red", true);
+            Potion healthPotion3 = new Potion("Health Potion", "Green", false);
+            Potion healthPotion4 = new Potion("Health Potion", "Yellow", false);
+            Potion mysteryPotion = new Potion("Health Potion", "Purple", true);
+            Potion mysteryPotion1 = new Potion("Health Potion", "Brown", true);
+            Potion mysteryPotio2 = new Potion("Health Potion", "Black", false);
+            Potion mysteryPotio3 = new Potion("Health Potion", "Blue", false);
 
             // Weapons
             Weapon Sword = new Weapon("Excalibur", "Sword", 25, true);
@@ -109,11 +109,11 @@ namespace Dungeon_Delver
 
             // Add NPSs in room
             Blue.NPCsInRoom.Add(GiantRat);
-            Blue.NPCsInRoom.Add(Slime);
+            //Blue.NPCsInRoom.Add(Slime);
             Blue.NPCsInRoom.Add(friendly1);
             Red.NPCsInRoom.Add(friendly2);
             Red.NPCsInRoom.Add(Crab);
-            Yellow.NPCsInRoom.Add(Wizzard);
+            //Yellow.NPCsInRoom.Add(Wizzard);
             Yellow.NPCsInRoom.Add(friendly3);
             Yellow.NPCsInRoom.Add(Ghost);
             Black.NPCsInRoom.Add(friendly4);
@@ -227,13 +227,10 @@ namespace Dungeon_Delver
 
                 case 5:
 
-                    break;
-
-                case 6:
-
                     Environment.Exit(0);
                     break;
 
+          
 
             }
         }
@@ -312,18 +309,17 @@ namespace Dungeon_Delver
                     player.ChooseItemsInRoom(room);
                     Console.ReadKey();
 
-
-
-
-
-
                     InsideRoomMenu(MenuDesign(roomChoices), game, player, room);
 
                     break;
 
                 case 3:
 
-
+                    Console.Clear();
+                    player.SeePotionsAndWeaponsInBag();
+                    Console.ReadKey();
+                    player.ChoosePotionToUse();
+                    Console.ReadKey();
                     InsideRoomMenu(MenuDesign(roomChoices), game, player, room);
 
 

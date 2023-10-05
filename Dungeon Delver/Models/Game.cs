@@ -17,14 +17,7 @@ namespace Dungeon_Delver.Models
             Player = player;
         }
 
-        public void GoToNextRoom()
-        {
-            
-        }
-        public void GoToPreviousRoom()
-        {
-
-        }
+       
         public void OnRoomEnter(Room room)
         {
             Random random = new Random();          
@@ -51,16 +44,6 @@ namespace Dungeon_Delver.Models
 
         }
 
-        public void OnEnemiesInRommDefeat()
-        {
-            
-
-        }
-        public void OnItemUse()
-        {
-
-        }
-
         public void Fight(Player player, NPC npc)
         {
             while (npc.IsAlive && player.IsAlive)
@@ -77,6 +60,7 @@ namespace Dungeon_Delver.Models
                     if (hitRandom > 4)
                     {
                         npc.Health -= criticalDmg;
+                        Console.Beep(1000, 1000);
                         Console.WriteLine($"{player.Name} hit a critical strike for {criticalDmg}. {npc.Name} now has {npc.Health} hp.");
                         Console.ReadKey();
                     }
@@ -84,6 +68,7 @@ namespace Dungeon_Delver.Models
                     else
                     {
                         player.Attack(npc);
+                        Console.Beep(1000, 1000);
                         Console.WriteLine($"{player.Name} hit a strike for {player.PlayerAttackDmg()}. {npc.Name} now has {npc.Health} hp.");
                         Console.ReadKey();
                     }
@@ -94,34 +79,33 @@ namespace Dungeon_Delver.Models
                     Console.WriteLine("You missed your attack");
                     Console.ReadKey();
                 }
-
                 if (npc.IsAlive && player.IsAlive)
                 {
                     npc.AttackPlayer(player);
                     Console.WriteLine($"{npc.Name} strike back with {npc.Dmg} and {player.Name} now has {player.Health} hp.");
                     Console.ReadKey();
                 }
-                else if (!player.IsAlive)
-                {
-                    Console.WriteLine("Game over");
-                    Console.ReadKey(true);
-                    Environment.Exit(0);
-                }
-                else
-                {
-                    Console.WriteLine($"{npc.Name} died!");
-                    CurrentRoom.NPCsInRoom.Remove(npc);
-                    npc.GiveXP(player);
-                    Console.WriteLine($"\nYou now have {player.Experience} XP!");
-                    player.PickUpKey(npc);
-                    Console.WriteLine($"\n{npc.Name} dropped {npc.NPCitems[0].Description} and you put it in your bag.");
-                    break;
-                }          
 
             }
             
-            
+            if (npc.IsAlive && !player.IsAlive)
+            {
+                Console.WriteLine("Game over");
+                Console.ReadKey(true);
+                Environment.Exit(0);
+            }
+            else
+            {
+                Console.WriteLine($"{npc.Name} died!");
+                CurrentRoom.NPCsInRoom.Remove(npc);
+                npc.GiveXP(player);
+                Console.WriteLine($"\nYou now have {player.Experience} XP!");
+                if (npc.NPCitems.Count > 0)
+                {
+                    Console.WriteLine($"\n{npc.Name} dropped a {npc.NPCitems[0].Description} and you picked it up.");
+                    player.PickUpKey(npc);
+                }                           
+            }
         }
-
     }
 }

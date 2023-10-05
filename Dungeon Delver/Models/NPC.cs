@@ -22,8 +22,7 @@ namespace Dungeon_Delver.Models
             IsFriendly = isFriendly;
             Dmg = dmg;
             Experience = 10;
-            NPCitems = new List<Item>();
-           
+            NPCitems = new List<Item>();          
 
         }
 
@@ -31,12 +30,7 @@ namespace Dungeon_Delver.Models
         {
             player.Health -= Dmg;
         }
-
-        public int HealPlayer()
-        {
-            return 10;
-        }
-
+      
         public void TakeDamage(Player player)
         {
             Health -= player.Dmg;
@@ -57,6 +51,5 @@ namespace Dungeon_Delver.Models
             player.Experience += Experience;
             Experience = 0;
         }
-
     }
 }

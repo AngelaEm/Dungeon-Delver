@@ -32,10 +32,7 @@ namespace Dungeon_Delver.Models
             KeyRing = new List<Item>();
         }
 
-        public int TakeDamage(Potion potion)
-        {
-            return Health += potion.PotionEffect();
-        }
+        
         public void PickUpItem(Item item)
         {
            Inventory.Add(item);
@@ -75,10 +72,10 @@ namespace Dungeon_Delver.Models
             Console.ReadKey();
         }
 
-        public void UseItem(Potion potion)
+        public void UseItem(Item item)
         {
-            Health += potion.PotionEffect();
-            Inventory.Remove(potion);
+            Health += item.PotionEffect(item);
+            Inventory.Remove(item);
 
             if (Health < 1)
             {
@@ -87,10 +84,12 @@ namespace Dungeon_Delver.Models
             }
           
         }
-        public void UseItem(Weapon weapon)
-        {        
-            Dmg = weapon.Dmg;
-        }
+
+        //public void UseItem(Weapon weapon)
+        //{        
+        //    Dmg = weapon.Dmg;
+        //}
+
         public void Attack(NPC npc)
         {
             npc.Health -= (Dmg + Strength);
@@ -113,6 +112,37 @@ namespace Dungeon_Delver.Models
             }
 
             Console.ReadKey();
+        }
+
+        public void SeePotionsAndWeaponsInBag()
+        {
+            Console.WriteLine("You currently have these potions and weapons in yor bag:\n");
+            foreach (var item in Inventory)
+            {
+                Console.WriteLine(item.ToString());
+                Console.WriteLine();
+            }
+
+        }
+
+        public void ChoosePotionToUse()
+        {
+            if (Inventory.Count > 0)
+            {
+                foreach (Item item in Inventory)
+                {
+                    Console.WriteLine($"Do you want to use {item.Name} y/n?");
+                    string input = Console.ReadLine().ToLower();
+
+                    if (input == "y")
+                    {
+                        UseItem(item);
+                        break;
+                    }
+
+                }
+
+            }
         }
     }
 }

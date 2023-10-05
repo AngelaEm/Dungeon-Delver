@@ -17,5 +17,19 @@ namespace Dungeon_Delver.Models
             return  $"\nItem: {Name}\nDescription: {Description}\n";
         }
 
+        public int PotionEffect(Item item)
+        {
+            if (item.IsUsable)
+            {
+                Console.WriteLine($"Your health was increased by 20.");
+                return 20;
+            }
+            else
+            {
+                Console.WriteLine($"Your health was decreased by 10.");
+                return -10;
+            }
+        }
+
     }
 }
