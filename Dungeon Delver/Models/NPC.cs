@@ -10,6 +10,8 @@ namespace Dungeon_Delver.Models
     {
         public bool IsFriendly { get; set; }
 
+        public List<Item> NPCitems { get; set; }
+
         
 
         public NPC(string name, string description, int health, bool isFriendly, int dmg)
@@ -20,6 +22,7 @@ namespace Dungeon_Delver.Models
             IsFriendly = isFriendly;
             Dmg = dmg;
             Experience = 10;
+            NPCitems = new List<Item>();
            
 
         }

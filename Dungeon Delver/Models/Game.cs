@@ -53,7 +53,7 @@ namespace Dungeon_Delver.Models
 
         public void OnEnemiesInRommDefeat()
         {
-            CurrentRoom.NPCsInRoom.Clear();
+            
 
         }
         public void OnItemUse()
@@ -95,7 +95,7 @@ namespace Dungeon_Delver.Models
                     Console.ReadKey();
                 }
 
-                if (npc.IsAlive)
+                if (npc.IsAlive && player.IsAlive)
                 {
                     npc.AttackPlayer(player);
                     Console.WriteLine($"{npc.Name} strike back with {npc.Dmg} and {player.Name} now has {player.Health} hp.");
@@ -112,7 +112,9 @@ namespace Dungeon_Delver.Models
                     Console.WriteLine($"{npc.Name} died!");
                     CurrentRoom.NPCsInRoom.Remove(npc);
                     npc.GiveXP(player);
-                    Console.WriteLine($"You now have {player.Experience} XP!");
+                    Console.WriteLine($"\nYou now have {player.Experience} XP!");
+                    player.PickUpKey(npc);
+                    Console.WriteLine($"\n{npc.Name} dropped {npc.NPCitems[0].Description} and you put it in your bag.");
                     break;
                 }          
 

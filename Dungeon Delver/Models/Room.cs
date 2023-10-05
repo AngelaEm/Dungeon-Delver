@@ -14,6 +14,8 @@ namespace Dungeon_Delver.Models
 
         public List<NPC>? NPCsInRoom { get; set; }
 
+
+
         public Room(string description)
         {
             Description= description;
@@ -61,6 +63,11 @@ namespace Dungeon_Delver.Models
             }
 
             Console.ResetColor();
+        }
+
+        public void RemoveItemFromRoom(Item item)
+        {
+            ItemsInRoom.Remove(item);
         }
     }
 }

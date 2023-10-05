@@ -14,7 +14,7 @@ namespace Dungeon_Delver.Models
 
         public override string ToString()
         {
-            return  $"Item: {Name}\nDescription: {Description}\n";
+            return  $"\nItem: {Name}\nDescription: {Description}\n";
         }
 
     }

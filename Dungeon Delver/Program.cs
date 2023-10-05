@@ -36,6 +36,8 @@ namespace Dungeon_Delver
             NPC Crab = new NPC("Crab", "Its got a knife", 70, false, 7);
             NPC GiantRat = new NPC("Giant Rat", "Its Huge!", 50, false, 5);
             NPC Slime = new NPC("Slime", "its very slimy", 60, false, 10);
+            NPC Ghost = new NPC("Ghost", "Is very spooky", 90, false, 15);
+            NPC Vampire = new NPC("Vampire", "Drink your blood", 80, false, 8);
             NPC Wizzard = new NPC("Klaus", "A very red and fat man", 100, true, 0);
             NPC friendly1 = new NPC("Unicorn", "A very friendly unicorn", 50, true, 0);
             NPC friendly2 = new NPC("Dog", "A very friendly dog", 50, true, 0);
@@ -56,10 +58,10 @@ namespace Dungeon_Delver
             Key blueKey2 = new Key("Blue key 2", "A big darkblue key", false);
             Key redKey1 = new Key("Red key 1", "A shiny red key", true);
             Key redKey2 = new Key("Red key 2", "A dirty old key", false);
-            Key yellowKey1 = new Key("Yellow key 1", "A heavy golden key", false);
-            Key yellowKey2 = new Key("Yellow key 2", "A heavy neonyellow key", true);
-            Key blackKey1 = new Key("Black key 1", "A talking black key", false);
-            Key blackKey2 = new Key("Black key", "A silent black key", true);
+            Key yellowKey1 = new Key("Yellow key 1", "A heavy golden key", true);
+            Key yellowKey2 = new Key("Yellow key 2", "A heavy neonyellow key", false);
+            Key blackKey1 = new Key("Black key 1", "A talking black key", true);
+            Key blackKey2 = new Key("Black key", "A silent black key", false);
 
             // Potions
             Potion healthPotion = new Potion("Health Potion", "Generates health", true);
@@ -91,13 +93,10 @@ namespace Dungeon_Delver
             Black.ItemsInRoom.Add(mysteryPotio2);
             Black.ItemsInRoom.Add(mysteryPotio3);
 
-            Blue.ItemsInRoom.Add(blueKey1);
-            Blue.ItemsInRoom.Add(blueKey2);
-            Red.ItemsInRoom.Add(redKey1);
-            Red.ItemsInRoom.Add(redKey2);
-            Yellow.ItemsInRoom.Add(yellowKey1);
-            Yellow.ItemsInRoom.Add(yellowKey2);
-            Black.ItemsInRoom.Add(blackKey1);
+            
+            Blue.ItemsInRoom.Add(blueKey2);           
+            Red.ItemsInRoom.Add(redKey2);          
+            Yellow.ItemsInRoom.Add(yellowKey2);           
             Black.ItemsInRoom.Add(blackKey2);
 
             Blue.ItemsInRoom.Add(Sword);
@@ -116,7 +115,15 @@ namespace Dungeon_Delver
             Red.NPCsInRoom.Add(Crab);
             Yellow.NPCsInRoom.Add(Wizzard);
             Yellow.NPCsInRoom.Add(friendly3);
+            Yellow.NPCsInRoom.Add(Ghost);
             Black.NPCsInRoom.Add(friendly4);
+            Black.NPCsInRoom.Add(Vampire);
+
+            // Keys on NPC
+            Vampire.NPCitems.Add(blackKey1);
+            Ghost.NPCitems.Add(yellowKey1);
+            Crab.NPCitems.Add(redKey1);
+            GiantRat.NPCitems.Add(blueKey1);
 
 
             
@@ -302,14 +309,12 @@ namespace Dungeon_Delver
 
                     Console.Clear();
 
-
-                    Console.WriteLine("Do you want to add items to yor bag?");
-                    Console.WriteLine("You may add three different items. Press enter to continue...\n");
+                    player.ChooseItemsInRoom(room);
                     Console.ReadKey();
 
 
 
-                    
+
 
 
                     InsideRoomMenu(MenuDesign(roomChoices), game, player, room);
@@ -326,10 +331,7 @@ namespace Dungeon_Delver
 
                 case 4:
 
-                    foreach (var item in player.Inventory)
-                    {
-                        Console.WriteLine(item.Name);
-                    }
+                    player.SeeItemsInBag();
                     Console.ReadKey();
                     InsideRoomMenu(MenuDesign(roomChoices), game, player, room);
 

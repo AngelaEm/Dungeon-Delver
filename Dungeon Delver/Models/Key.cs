@@ -15,5 +15,7 @@ namespace Dungeon_Delver.Models
             IsUsable = isUsable;
 
         }
+
+        
     }
 }
